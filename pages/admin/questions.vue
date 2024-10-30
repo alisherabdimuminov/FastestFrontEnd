@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import apify from '~/composables/useAPI';
-import type { IQuestion, IResponse, ISpec } from '~/types';
+import type { IQuestion, IResponse, ISet } from '~/types';
 import { useToast } from '~/components/ui/toast';
 
 
@@ -13,8 +13,8 @@ useHead({
 
 const { toast } = useToast();
 
-const specs = ref<ISpec[]>();
-const spec = ref<ISpec>({
+const sets = ref<ISet[]>();
+const set = ref<ISet>({
     id: "0",
     name: "test"
 });
@@ -27,26 +27,26 @@ const question = ref<IQuestion>({
     answer_c: "",
     answer_d: "",
     correct_answer: "",
-    score: "",
-    spec: spec.value
+    score: 2,
+    set: set.value
 });
 
 
 onMounted(() => {
-    getSpecs();
+    getSets();
     getQuestions();
 });
 
-const getSpecs = async () => {
-    let result = await $fetch<ISpec[]>(apify("specs"));
-    specs.value = result;
+const getSets = async () => {
+    let result = await $fetch<ISet[]>(apify("sets"));
+    sets.value = result;
 }
 
-const addSpec = async () => {
-    let result = await $fetch<IResponse>(apify("specs/add"), {
+const addSet = async () => {
+    let result = await $fetch<IResponse<string>>(apify("specs/add"), {
         method: "POST",
         body: JSON.stringify({
-            "name": spec.value.name
+            "name": set.value.name
         })
     });
     if (result.status === "success") {
@@ -54,7 +54,7 @@ const addSpec = async () => {
             title: "Ajoyib",
             description: "To'plam qo'shildi"
         });
-        getSpecs();
+        getSets();
     } else {
         toast({
             title: "Xatolik",
@@ -69,7 +69,7 @@ const getQuestions = async () => {
 }
 
 const addQuestion = async () => {
-    let result = await $fetch<IResponse>(apify("questions/add"), {
+    let result = await $fetch<IResponse<string>>(apify("questions/add"), {
         method: "POST",
         body: JSON.stringify({
             "question": question.value.question,
@@ -78,7 +78,7 @@ const addQuestion = async () => {
             "answer_c": question.value.answer_c,
             "answer_d": question.value.answer_d,
             "score": question.value.score,
-            "spec": question.value.spec.id,
+            "spec": question.value.set.id,
             "correct_answer": correctAnswer.value,
         })
     });
@@ -114,10 +114,10 @@ const addQuestion = async () => {
                     </DialogHeader>
                     <div>
                         <Label>Nomi</Label>
-                        <Input v-model="spec.name" />
+                        <Input v-model="set.name" />
                     </div>
                     <DialogFooter>
-                        <Button @click="addSpec">Qo'shish</Button>
+                        <Button @click="addSet">Qo'shish</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
@@ -125,13 +125,13 @@ const addQuestion = async () => {
         <div class="border rounded-md">
             <Table>
                 <TableHeader class="border-b">
-                    <TableHead>#</TableHead>
+                    <TableHead class="w-4">#</TableHead>
                     <TableHead>Name</TableHead>
                 </TableHeader>
                 <TableBody>
-                    <TableRow v-for="spec, index in specs">
-                        <TableCell>{{ index+1 }}</TableCell>
-                        <TableCell>{{ spec.name }}</TableCell>
+                    <TableRow v-for="set, index in sets">
+                        <TableCell class="border-r">{{ index+1 }}</TableCell>
+                        <TableCell>{{ set.name }}</TableCell>
                     </TableRow>
                 </TableBody>
             </Table>
@@ -183,16 +183,16 @@ const addQuestion = async () => {
                                 </div>
                             </RadioGroup>
                         </div>
-                        <Label>Spec</Label>
-                        <Select v-model="question.spec.id">
+                        <Label>To'plam</Label>
+                        <Select v-model="question.set.id">
                             <SelectTrigger>
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem v-for="s in specs" :value="s.id">{{ s.name }}</SelectItem>
+                                <SelectItem v-for="set in sets" :value="set.id">{{ set.name }}</SelectItem>
                             </SelectContent>
                         </Select>
-                        <Label>Score</Label>
+                        <Label>Ball</Label>
                         <Input type="number" v-model="question.score" />
                     </div>
                     <DialogFooter>
@@ -216,7 +216,7 @@ const addQuestion = async () => {
                 </TableHeader>
                 <TableBody>
                     <TableRow v-for="question, index in questions">
-                        <TableCell>{{ index+1 }}</TableCell>
+                        <TableCell class="border-r">{{ index+1 }}</TableCell>
                         <TableCell>
                             <p class="w-32 truncate">{{ question.question }}</p>
                         </TableCell>
@@ -234,7 +234,7 @@ const addQuestion = async () => {
                         </TableCell>
                         <TableCell>{{ question.correct_answer }}</TableCell>
                         <TableCell>{{ question.score }}</TableCell>
-                        <TableCell>{{ question.spec.name }}</TableCell>
+                        <TableCell>{{ question.set.name }}</TableCell>
                     </TableRow>
                 </TableBody>
             </Table>

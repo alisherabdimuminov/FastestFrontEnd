@@ -1,52 +1,134 @@
 <script setup lang="ts">
-import { LucideFlaskConical, LucideLayoutGrid, LucideLogOut, LucideText, LucideUser, LucideUsers, LucideZap } from 'lucide-vue-next';
+import { LucideCirclePlus, LucideFlaskConical, LucideGitBranch, LucideLayoutGrid, LucideLogOut, LucideMonitor, LucideMoon, LucideSprout, LucideSun, LucideText, LucideUser, LucideUsers, LucideZap } from 'lucide-vue-next';
 
+
+const { logout, user } = useAuth();
 const route = useRoute();
+
+if (user.value === null) {
+    logout();
+    console.log("logout")
+}
+
+const colorMode = useColorMode();
+
 </script>
 
 <template>
     <div class="h-screen flex">
-        <div class="w-14 sm:w-64 md:w-64 border-r bg-accent/30">
-            <div class="h-[3rem] flex gap-2 items-center justify-center md:justify-start">
-                <LucideZap :size="20" />
-                <p class="hidden md:block text-2xl">EcoTest</p>
+        <div class="w-14 border-r bg-accent/30">
+            <div class="h-[3rem] flex gap-2 items-center justify-center">
+                <LucideSprout :size="30" />
             </div>
-            <div class="hidden md:flex flex-col gap-1 p-2">
-                <NuxtLink :to="{ name: 'index' }" class="flex items-center gap-2 p-1" :class="route.name === 'index' ? 'font-bold' : 'text-muted-foreground'">
-                    <LucideLayoutGrid :size="20" />
-                    <span>Bosh sahifa</span>
-                </NuxtLink>
-                <NuxtLink :to="{ name: 'employees' }" class="flex items-center gap-2 p-1" :class="route.name === 'employees' ? 'font-bold' : 'text-muted-foreground'">
-                    <LucideUsers :size="20" />
-                    <span>Xodimlar</span>
-                </NuxtLink>
-                <NuxtLink :to="{ name: 'tests' }" class="flex items-center rounded-md gap-2 p-1" :class="route.name === 'tests' ? 'font-bold' : 'text-muted-foreground'">
-                    <LucideFlaskConical :size="20" />
-                    <span>Testlar</span>
-                </NuxtLink>
-                <NuxtLink :to="{ name: 'questions' }" class="flex items-center rounded-md gap-2 p-1" :class="route.name === 'questions' ? 'font-bold' : 'text-muted-foreground'">
-                    <LucideText :size="20" />
-                    <span>Savollar</span>
-                </NuxtLink>
-            </div>
-            <div class="flex md:hidden flex-col gap-1 p-2">
-                <NuxtLink class="flex items-center rounded-md gap-2 p-1 text-muted-foreground">
-                    <LucideLayoutGrid :size="20" />
-                </NuxtLink>
-                <NuxtLink class="flex items-center rounded-md gap-2 p-1 font-bold">
-                    <LucideLayoutGrid :size="20" />
-                </NuxtLink>
+            <div class="flex flex-col gap-1 p-2">
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <NuxtLink :to="{ name: 'admin' }" class="flex items-center gap-2 p-1" :class="route.name === 'admin' ? 'font-bold' : 'text-muted-foreground'">
+                                <LucideLayoutGrid :size="20" />
+                            </NuxtLink>
+                        </TooltipTrigger>
+                        <TooltipContent side="right">
+                            Bosh sahifa
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <NuxtLink :to="{ name: 'admin-users' }" class="flex items-center gap-2 p-1" :class="route.name === 'admin-users' ? 'font-bold' : 'text-muted-foreground'">
+                                <LucideUsers :size="20" />
+                            </NuxtLink>
+                        </TooltipTrigger>
+                        <TooltipContent side="right">
+                            Xodimlar
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <NuxtLink :to="{ name: 'admin-tests' }" class="flex items-center rounded-md gap-2 p-1" :class="route.name === 'admin-tests' ? 'font-bold' : 'text-muted-foreground'">
+                                <LucideFlaskConical :size="20" />
+                            </NuxtLink>
+                        </TooltipTrigger>
+                        <TooltipContent side="right">
+                            Testlar
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <NuxtLink :to="{ name: 'admin-questions' }" class="flex items-center rounded-md gap-2 p-1" :class="route.name === 'admin-questions' ? 'font-bold' : 'text-muted-foreground'">
+                                <LucideText :size="20" />
+                            </NuxtLink>
+                        </TooltipTrigger>
+                        <TooltipContent side="right">
+                            Savollar
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <NuxtLink :to="{ name: 'admin-bulk' }" class="flex items-center rounded-md gap-2 p-1" :class="route.name === 'admin-bulk' ? 'font-bold' : 'text-muted-foreground'">
+                                <LucideCirclePlus :size="20" />
+                            </NuxtLink>
+                        </TooltipTrigger>
+                        <TooltipContent side="right">
+                            Savol qo'shish
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             </div>
         </div>
         <div class="flex-1 w-[calc(100%-3.5rem)]">
             <div class="h-[3rem] border-b bg-accent/30 flex items-center justify-between px-5">
-                <div></div>
+                <div>
+                    <p class="font-bold">Davlat ekologik ekspertizasi markazi</p>
+                </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger>
                         <LucideUser />
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
+                    <DropdownMenuContent class="w-64">
+                        <DropdownMenuLabel>{{ user?.phone }}</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
                         <DropdownMenuItem>
+                            {{ user?.first_name }} {{ user?.last_name }}
+                            <DropdownMenuShortcut>
+                                <LucideUser :size="16" />
+                            </DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            {{ user?.branch }}
+                            <DropdownMenuShortcut>
+                                <LucideGitBranch :size="16" />
+                            </DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuLabel>Rejim</DropdownMenuLabel>
+                        <DropdownMenuItem @click="colorMode.preference = 'light'">
+                            Tizim
+                            <DropdownMenuShortcut>
+                                <LucideMonitor :size="16" />
+                            </DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem @click="colorMode.preference = 'light'">
+                            Yorug'
+                            <DropdownMenuShortcut>
+                                <LucideSun :size="16" />
+                            </DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem @click="colorMode.preference = 'dark'">
+                            Qorong'u
+                            <DropdownMenuShortcut>
+                                <LucideMoon :size="16" />
+                            </DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem @click="logout">
                             <span>Chiqish</span>
                             <DropdownMenuShortcut>
                                 <LucideLogOut :size="16" />

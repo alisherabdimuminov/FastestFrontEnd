@@ -1,40 +1,59 @@
-export interface IResponse {
+export interface IResponse<T> {
     status: "success" | "error"
     code: string
-    data: string
+    data: T
 }
 
-export interface IEmployee {
+export interface IUser {
     id: string
+    uuid: string
     username: string
     first_name: string
     last_name: string
+    middle_name: string
     phone: string
+    branch: string
+    department: string
+    position: string
+    role: "admin" | "user"
     pwd: string
-    role: "admin" | "emploee"
+    token: string
 }
 
-export interface ISpec {
+export const branches = ref([
+    "Давлат экологик экспертизаси маркази", "Қорақалпоғистон Республикаси филиали",
+    "Андижон вилояти филиали", "Бухоро вилояти филиали", "Жиззах вилояти филиали",
+    "Қашқадарё вилояти филиали", "Наманган вилояти филиали", "Навоий вилояти филиали",
+    "Самарқанд вилояти филиали", "Сурхондарё вилояти филиали", "Сирдарё вилояти филиали",
+    "Тошкент вилояти филиали", "Тошкент шаҳар филиали", "Фарғона вилояти филиали",
+    "Хоразм вилояти филиали",
+]);
+
+export interface ISet {
     id: string
     name: string
 }
 
 export interface IQuestion {
-    spec: ISpec
+    set: ISet
     question: string
     answer_a: string
     answer_b: string
     answer_c: string
     answer_d: string
     correct_answer: string
-    score: string
+    score: number
 }
 
 export interface ITest {
     name: string
-    employee: IEmployee
-    spec: ISpec
-    score: string
-    passed_score: string
-    status: string
+    user: IUser
+    set: ISet
+    start_time: string
+    duration: number
+    passed_score: number
+    
+    status: "not_started" | "passed" | "failed" | "ended"
+    percentage: number
+    elapsed: number
 }
