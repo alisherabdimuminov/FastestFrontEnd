@@ -3,7 +3,7 @@ import apify from '~/composables/useAPI';
 import type { IUser, IResponse } from '~/types';
 import { branches } from '~/types';
 import { useToast } from '~/components/ui/toast';
-import { LucideEdit } from 'lucide-vue-next';
+import { LucideEdit, LucideShuffle } from 'lucide-vue-next';
 
 
 definePageMeta({
@@ -48,6 +48,7 @@ const addUser = async () => {
         let response = await $fetch<IResponse<object>>(apify("users/add"), {
             method: "POST",
             body: JSON.stringify({
+                "username": user.value.username,
                 "first_name": user.value.first_name,
                 "last_name": user.value.last_name,
                 "middle_name": user.value.middle_name,
@@ -120,6 +121,8 @@ const editUser = async (user: IUser) => {
                         <DialogTitle>Yangi xodim qo'shish</DialogTitle>
                     </DialogHeader>
                     <div>
+                        <Label>Foydalanuvchi nomi</Label>
+                        <Input v-model="user.username" />
                         <div class="flex gap-3 flex-col md:flex-row">
                             <div class="w-full">
                                 <Label>Ism </Label>
@@ -150,7 +153,12 @@ const editUser = async (user: IUser) => {
                         <Label>Lavozimi </Label>
                         <Input v-model="user.position" />
                         <Label>Parol </Label>
-                        <Input v-model="user.pwd" />
+                        <div class="relative">
+                            <Input v-model="user.pwd" />
+                            <div class="absolute top-0 right-0">
+                                <Button @click="user.pwd = autogen()" variant="xs"><LucideShuffle :size="16" /> </Button>
+                            </div>
+                        </div>
                     </div>
                     <DialogFooter>
                         <Button @click="addUser">Qo'shish</Button>

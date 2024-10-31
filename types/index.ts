@@ -46,14 +46,16 @@ export interface IQuestion {
 }
 
 export interface ITest {
+    uuid: string
     name: string
     user: IUser
     set: ISet
-    start_time: string
-    duration: number
     passed_score: number
+    questions_count: number
     
     status: "not_started" | "passed" | "failed" | "ended"
     percentage: number
     elapsed: number
+    questions?: IQuestion
+    cases?: object
 }

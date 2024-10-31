@@ -18,7 +18,7 @@ const set = ref<ISet>({
     id: "0",
     name: "test"
 });
-const correctAnswer = ref();
+const correctAnswer = ref("a");
 const questions = ref<IQuestion[]>();
 const question = ref<IQuestion>({
     question: "",
@@ -43,7 +43,7 @@ const getSets = async () => {
 }
 
 const addSet = async () => {
-    let result = await $fetch<IResponse<string>>(apify("specs/add"), {
+    let result = await $fetch<IResponse<string>>(apify("sets/add"), {
         method: "POST",
         body: JSON.stringify({
             "name": set.value.name
@@ -78,7 +78,7 @@ const addQuestion = async () => {
             "answer_c": question.value.answer_c,
             "answer_d": question.value.answer_d,
             "score": question.value.score,
-            "spec": question.value.set.id,
+            "set": question.value.set.id,
             "correct_answer": correctAnswer.value,
         })
     });
@@ -205,14 +205,14 @@ const addQuestion = async () => {
             <Table class="whitespace-nowrap">
                 <TableHeader class="border-b">
                     <TableHead>#</TableHead>
-                    <TableHead>Question</TableHead>
-                    <TableHead>Answer a</TableHead>
-                    <TableHead>Answer b</TableHead>
-                    <TableHead>Answer c</TableHead>
-                    <TableHead>Answer d</TableHead>
-                    <TableHead>Correct answer</TableHead>
-                    <TableHead>Score</TableHead>
-                    <TableHead>Spec</TableHead>
+                    <TableHead>Savol</TableHead>
+                    <TableHead>a varyant</TableHead>
+                    <TableHead>b varyant</TableHead>
+                    <TableHead>c varyant</TableHead>
+                    <TableHead>d varyant</TableHead>
+                    <TableHead>To'g'ri javob</TableHead>
+                    <TableHead>Ball</TableHead>
+                    <TableHead>To'plam</TableHead>
                 </TableHeader>
                 <TableBody>
                     <TableRow v-for="question, index in questions">

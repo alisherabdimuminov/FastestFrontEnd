@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import apify from "~/composables/useAPI";
+
 
 interface IQuestion {
     question: string
@@ -11,6 +13,7 @@ interface IQuestion {
 
 const rawQuestions = ref("");
 const questions = ref<IQuestion[]>([]);
+const isLoading = ref(false);
 
 
 const parseRawQuestions = () => {
@@ -37,12 +40,26 @@ watch(rawQuestions, (newValue) => {
 definePageMeta({
     layout: "admin"
 });
+
+
+const bulkCreate = async () => {
+    isLoading.value = true;
+    let response = await $fetch(apify("bulk"), {
+        method: "POST",
+        body: JSON.stringify({
+            "raw": rawQuestions.value,
+        })
+    });
+    rawQuestions.value = "";
+    isLoading.value = false;
+}
 </script>
 
 <template>
     <div class="h-full p-5 md:p-10 flex flex-col gap-5">
+        <Button :disabled="isLoading" @click="bulkCreate">Generatsiya qilish</Button>
         <div class="flex h-full border">
-            <Textarea cols="20" v-model="rawQuestions" />
+            <Textarea :disabled="isLoading" cols="20" v-model="rawQuestions" />
             <div class="w-full p-2">
                 <div v-for="question, index in questions">
                     <p>{{ index+1 }}. {{ question.question }}</p>

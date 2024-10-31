@@ -37,12 +37,12 @@ const user = ref<IUser>({
     "token": ""
 });
 const test = ref<ITest>({
+    uuid: "",
     name: "",
     user: user.value,
     set: set.value,
-    start_time: "",
-    duration: 60,
     passed_score: 70,
+    questions_count: 120,
 
     percentage: 0,
     status: "not_started",
@@ -81,9 +81,8 @@ const addTest = async () => {
             "name": test.value.name,
             "user": test.value.user.id,
             "set": test.value.set.id,
-            "start_time": `${start_date.value} ${start_time.value}`,
-            "duration": test.value.duration,
             "passed_score": test.value.passed_score,
+            "questions_count": test.value.questions_count,
         })
     });
     if (result.status === "success") {
@@ -139,24 +138,8 @@ const updateStartDate = (value: any) => {
                                 <SelectItem v-for="set in sets" :value="set.id" >{{ set.name }}</SelectItem>
                             </SelectContent>
                         </Select>
-                        <Label>Boshlanish vaqti</Label>
-                        <div class="flex gap-2">
-                            <div class="w-full">
-                                <Popover>
-                                    <PopoverTrigger>
-                                        <Input class="w-full" v-model="start_date" />
-                                    </PopoverTrigger>
-                                    <PopoverContent>
-                                        <Calendar @update:model-value="updateStartDate" />
-                                    </PopoverContent>
-                                </Popover>
-                            </div>
-                            <div class="w-full">
-                                <Input v-model="start_time" type="time"/>
-                            </div>
-                        </div>
-                        <Label>Davomiyligi (daqiqada)</Label>
-                        <Input type="number" v-model="test.duration" />
+                        <Label>Savollar soni</Label>
+                        <Input type="number" v-model="test.questions_count" />
                         <Label>O'tish bali</Label>
                         <Input type="number" v-model="test.passed_score" />
                     </div>
@@ -173,9 +156,9 @@ const updateStartDate = (value: any) => {
                     <TableHead>Nomi</TableHead>
                     <TableHead>Xodim</TableHead>
                     <TableHead>Filial</TableHead>
+                    <TableHead>Bo'lim</TableHead>
+                    <TableHead>Lavozimi</TableHead>
                     <TableHead>To'plam</TableHead>
-                    <TableHead>Boshlanish vaqti</TableHead>
-                    <TableHead>Davomiyligi</TableHead>
                     <TableHead>O'tish bali</TableHead>
                     <TableHead>Holati</TableHead>
                     <TableHead>Natija</TableHead>
@@ -187,9 +170,9 @@ const updateStartDate = (value: any) => {
                         <TableCell>{{ test.name }}</TableCell>
                         <TableCell>{{ test.user.first_name }} {{ test.user.last_name }}</TableCell>
                         <TableCell>{{ test.user.branch }}</TableCell>
+                        <TableCell>{{ test.user.department }}</TableCell>
+                        <TableCell>{{ test.user.position }}</TableCell>
                         <TableCell>{{ test.set.name }}</TableCell>
-                        <TableCell>{{ test.start_time }}</TableCell>
-                        <TableCell>{{ test.duration }}</TableCell>
                         <TableCell>{{ test.passed_score }}</TableCell>
                         <TableCell>
                             <span class="font-bold text-blue-500 border p-1 rounded-md bg-blue-500/10" v-if="test.status === 'not_started'">Boshlanmagan</span>
