@@ -2,6 +2,7 @@
 import type { ITest, IResponse } from "~/types";
 import apify from "~/composables/useAPI";
 import { LucideCheck, LucideX, LucideChevronLeft } from "lucide-vue-next";
+import { toast } from "~/components/ui/toast";
 
 
 definePageMeta({
@@ -23,10 +24,10 @@ const isLoading = ref(false);
 
 const getTest = async () => {
     isLoading.value = true;
-    let response = await $fetch<ITest[]>(apify(`tests/test/${route.params.uuid}`), {
+    let response = await $fetch<ITest>(apify(`tests/test/${route.params.uuid}`), {
         method: "GET",
         headers: {
-            "Authorization": `Token ${user.value.token}`
+            "Authorization": `Token ${user.value?.token}`
         }
     });
     test.value = response;
@@ -42,7 +43,7 @@ const setStartTime = async () => {
             "start_time": `${start_time.getFullYear()}-${start_time.getMonth()+1}-${start_time.getDate()} ${start_time.getHours()}:${start_time.getMinutes()}:${start_time.getSeconds()}`
         },
         headers: {
-            "Authorization": `Token ${user.value.token}`
+            "Authorization": `Token ${user.value?.token}`
         },
     });
     getTest();
@@ -57,11 +58,18 @@ const submit = async () => {
             "answers": answers.value.join(",")
         }),
         headers: {
-            "Authorization": `Token ${user.value.token}`
+            "Authorization": `Token ${user.value?.token}`
         }
     });
-    if (response.status === "success") {
-        navigateTo("/");
+    if (response.status === "error") {
+        toast({
+            title: "Xatolik",
+            description: "Barch savollarni belgilang"
+        });
+    } else {
+        if (response.status === "success") {
+            navigateTo("/");
+        }
     }
     isLoading.value = false;
 }

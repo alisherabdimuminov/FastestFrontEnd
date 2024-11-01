@@ -100,8 +100,14 @@ const addTest = async () => {
     testOpenModal.value = false;
 }
 
-const updateStartDate = (value: any) => {
-    start_date.value = value;
+const printTestResult = async (test: ITest) => {
+    let url = apify(`tests/test/${test.uuid}/pdf`);
+    navigateTo(url, { external: true, open: { target: "_blank" } });
+}
+
+const printTestsResult = async () => {
+    let url = apify(`tests/pdf`);
+    navigateTo(url, { external: true, open: { target: "_blank" } });
 }
 </script>
 
@@ -109,45 +115,48 @@ const updateStartDate = (value: any) => {
     <div class="p-5 md:p-10 flex flex-col gap-5">
         <div class="flex justify-between">
             <p>Testlar</p>
-            <Dialog v-model:open="testOpenModal">
-                <DialogTrigger>
-                    <Button>Test qo'shish</Button>
-                </DialogTrigger>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Yangi test qo'shish</DialogTitle>
-                    </DialogHeader>
-                    <div>
-                        <Label>Nomi</Label>
-                        <Input v-model="test.name" />
-                        <Label>Xodim</Label>
-                        <Select v-model="test.user.id">
-                            <SelectTrigger>
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem v-for="user in users" :value="user.id" >{{ user.first_name }} {{  user.last_name }}</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <Label>To'plam</Label>
-                        <Select v-model="test.set.id">
-                            <SelectTrigger>
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem v-for="set in sets" :value="set.id" >{{ set.name }}</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <Label>Savollar soni</Label>
-                        <Input type="number" v-model="test.questions_count" />
-                        <Label>O'tish bali</Label>
-                        <Input type="number" v-model="test.passed_score" />
-                    </div>
-                    <DialogFooter>
-                        <Button @click="addTest">Qo'shish</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <div class="flex gap-2">
+                <Dialog v-model:open="testOpenModal">
+                    <DialogTrigger>
+                        <Button>Test qo'shish</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Yangi test qo'shish</DialogTitle>
+                        </DialogHeader>
+                        <div>
+                            <Label>Nomi</Label>
+                            <Input v-model="test.name" />
+                            <Label>Xodim</Label>
+                            <Select v-model="test.user.id">
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem v-for="user in users" :value="user.id" >{{ user.first_name }} {{  user.last_name }}</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Label>To'plam</Label>
+                            <Select v-model="test.set.id">
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem v-for="set in sets" :value="set.id" >{{ set.name }}</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Label>Savollar soni</Label>
+                            <Input type="number" v-model="test.questions_count" />
+                            <Label>O'tish bali</Label>
+                            <Input type="number" v-model="test.passed_score" />
+                        </div>
+                        <DialogFooter>
+                            <Button @click="addTest">Qo'shish</Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+                <Button @click="printTestsResult">PDF Natijalar</Button>
+            </div>
         </div>
         <div class="overflow-x-auto border rounded-md">
             <Table class="whitespace-nowrap">
@@ -163,6 +172,7 @@ const updateStartDate = (value: any) => {
                     <TableHead>Holati</TableHead>
                     <TableHead>Natija</TableHead>
                     <TableHead>Sarflangan vaqt</TableHead>
+                    <TableHead>Natija</TableHead>
                 </TableHeader>
                 <TableBody>
                     <TableRow v-for="test, index in tests">
@@ -176,12 +186,16 @@ const updateStartDate = (value: any) => {
                         <TableCell>{{ test.passed_score }}</TableCell>
                         <TableCell>
                             <span class="font-bold text-blue-500 border p-1 rounded-md bg-blue-500/10" v-if="test.status === 'not_started'">Boshlanmagan</span>
+                            <span class="font-bold text-sky-500 border p-1 rounded-md bg-sky-500/10" v-if="test.status === 'started'">Boshlangan</span>
                             <span class="font-bold text-green-500 border p-1 rounded-md bg-green-500/10" v-if="test.status === 'passed'">O'tgan</span>
                             <span class="font-bold text-red-500 border p-1 rounded-md bg-red-500/10" v-if="test.status === 'failed'">Yiqilgan</span>
                             <span class="font-bold text-orange-500 border p-1 rounded-md bg-orange-500/10" v-if="test.status === 'ended'">Tugagan</span>
                         </TableCell>
                         <TableCell>{{ test.percentage }}</TableCell>
                         <TableCell>{{ test.elapsed }}</TableCell>
+                        <TableCell>
+                            <Button v-if="test.status !== 'not_started' && test.status !== 'started'" @click="printTestResult(test)" size="xs">PDF Natija</Button>
+                        </TableCell>
                     </TableRow>
                 </TableBody>
             </Table>

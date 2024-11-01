@@ -11,5 +11,13 @@ export default defineNuxtConfig({
 	colorMode: {
 		classSuffix: "",
 		classPrefix: "",
+	},
+
+	app: {
+		head: {
+			link: [
+				{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }
+			]
+		}
 	}
 });

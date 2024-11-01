@@ -18,7 +18,8 @@ const colorMode = useColorMode();
     <div class="h-screen flex">
         <div class="w-14 border-r bg-accent/30">
             <div class="h-[3rem] flex gap-2 items-center justify-center">
-                <LucideSprout :size="30" />
+                <!-- <LucideSprout :size="30" /> -->
+                <img width="25" height="25" src="~/assets/images/logo.png" alt="">
             </div>
             <div class="flex flex-col gap-1 p-2">
                 <TooltipProvider>

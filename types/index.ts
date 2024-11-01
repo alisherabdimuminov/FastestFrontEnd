@@ -53,9 +53,9 @@ export interface ITest {
     passed_score: number
     questions_count: number
     
-    status: "not_started" | "passed" | "failed" | "ended"
+    status: "not_started" | "passed" | "failed" | "ended" | "started"
     percentage: number
     elapsed: number
-    questions?: IQuestion
-    cases?: object
+    questions?: IQuestion[]
+    cases?: any
 }

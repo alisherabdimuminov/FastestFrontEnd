@@ -21,7 +21,7 @@ const getTests = async () => {
     let response = await $fetch<ITest[]>(apify("tests/me"), {
         method: "GET",
         headers: {
-            "Authorization": `Token ${user.value.token}`
+            "Authorization": `Token ${user.value?.token}`
         }
     });
     tests.value = response;
@@ -53,15 +53,15 @@ onMounted(() => {
                         <TableCell>{{ test.questions_count }}</TableCell>
                         <TableCell>
                             <span class="font-bold text-blue-500 border p-1 rounded-md bg-blue-500/10" v-if="test.status === 'not_started'">Boshlanmagan</span>
+                            <span class="font-bold text-sky-500 border p-1 rounded-md bg-sky-500/10" v-if="test.status === 'started'">Boshlangan</span>
                             <span class="font-bold text-green-500 border p-1 rounded-md bg-green-500/10" v-if="test.status === 'passed'">O'tgan</span>
                             <span class="font-bold text-red-500 border p-1 rounded-md bg-red-500/10" v-if="test.status === 'failed'">Yiqilgan</span>
                             <span class="font-bold text-orange-500 border p-1 rounded-md bg-orange-500/10" v-if="test.status === 'ended'">Tugagan</span>
                         </TableCell>
                         <TableCell>{{ test.percentage }}</TableCell>
                         <TableCell>
-                            <Button @click="navigateTo({ name: 'uuid', params: { uuid: test.uuid } })" size="xs">
-                                 <span v-if="test.status === 'not_started'">Boshlash</span>
-                                 <span v-else>Natija</span>
+                            <Button v-if="test.status === 'not_started' || test.status === 'started'" @click="navigateTo({ name: 'uuid', params: { uuid: test.uuid } })" size="xs">
+                                 <span>Boshlash</span>
                             </Button>
                         </TableCell>
                     </TableRow>
