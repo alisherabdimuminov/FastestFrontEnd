@@ -15,7 +15,7 @@ export interface IUser {
     branch: string
     department: string
     position: string
-    role: "admin" | "user"
+    role: "admin" | "user" | "anonym"
     pwd: string
     token: string
 }

@@ -156,7 +156,7 @@ const editUser = async (user: IUser) => {
                         <div class="relative">
                             <Input v-model="user.pwd" />
                             <div class="absolute top-0 right-0">
-                                <Button @click="user.pwd = autogen()" variant="xs"><LucideShuffle :size="16" /> </Button>
+                                <Button @click="user.pwd = autogen()" size="xs"><LucideShuffle :size="16" /> </Button>
                             </div>
                         </div>
                     </div>

@@ -88,7 +88,7 @@ onMounted(() => {
     <div class="p-5 md:p-10 flex flex-col gap-5 sm:mx-16 md:mx-24 lg:mx-64">
         <div class="flex justify-between">
             <Button @click="navigateTo('/')"><LucideChevronLeft /> Orqaga </Button>
-            <Button v-if="test && test.status === 'not_started'" @click="submit" size="xs" variant="destructive">Tugatish</Button>
+            <Button v-if="test && (test.status === 'not_started' || test.status === 'started')" @click="submit" size="xs" variant="destructive">Tugatish</Button>
         </div>
         <p v-if="test" class="text-center text-2xl font-bold">{{ test.name }}</p>
         <div  class="h-full border p-1 md:p-5 bg-accent/30 flex flex-col divide-y">
@@ -97,19 +97,19 @@ onMounted(() => {
                 <RadioGroup class="ml-10 p-2 flex flex-col gap-3" v-model="answers[index]">
                     <div class="flex gap-3">
                         <RadioGroupItem :id="`q_${index+1}_answer_a`" value="a" />
-                        <Label :for="`q_${index+1}_answer_a`">{{ question.answer_a }}</Label>
+                        <Label :class="{ 'underline underline-offset-4': question.correct_answer === 'a' && user && user.role === 'anonym' }" :for="`q_${index+1}_answer_a`">{{ question.answer_a }}</Label>
                     </div>
                     <div class="flex gap-3">
                         <RadioGroupItem :id="`q_${index+1}_answer_b`" value="b" />
-                        <Label :for="`q_${index+1}_answer_b`">{{ question.answer_b }}</Label>
+                        <Label :class="{ 'underline underline-offset-4': question.correct_answer === 'b' && user && user.role === 'anonym' }" :for="`q_${index+1}_answer_b`">{{ question.answer_b }}</Label>
                     </div>
                     <div class="flex gap-3">
                         <RadioGroupItem :id="`q_${index+1}_answer_c`" value="c" />
-                        <Label :for="`q_${index+1}_answer_c`">{{ question.answer_c }}</Label>
+                        <Label :class="{ 'underline underline-offset-4': question.correct_answer === 'c' && user && user.role === 'anonym' }" :for="`q_${index+1}_answer_c`">{{ question.answer_c }}</Label>
                     </div>
                     <div class="flex gap-3">
                         <RadioGroupItem :id="`q_${index+1}_answer_d`" value="d" />
-                        <Label :for="`q_${index+1}_answer_d`">{{ question.answer_d }}</Label>
+                        <Label :class="{ 'underline underline-offset-4': question.correct_answer === 'd' && user && user.role === 'anonym' }" :for="`q_${index+1}_answer_d`">{{ question.answer_d }}</Label>
                     </div>
                 </RadioGroup>
             </div>
