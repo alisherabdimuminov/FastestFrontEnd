@@ -9,6 +9,9 @@ definePageMeta({
     middleware: "is-auth",
     layout: "user"
 });
+useHead({
+    title: "Davlat ekologik ekspertizasi markazi"
+});
 
 const { user } = useAuth();
 const route = useRoute();

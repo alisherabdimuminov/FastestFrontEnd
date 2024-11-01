@@ -8,6 +8,9 @@ import type { IResponse, IUser } from '~/types';
 definePageMeta({
     layout: "auth"
 });
+useHead({
+    title: "Kirish"
+});
 
 const { login } = useAuth();
 
