@@ -114,29 +114,5 @@ onMounted(() => {
                 </RadioGroup>
             </div>
         </div>
-        <p v-if="test && test.status !== 'not_started'" class="text-center text-2xl font-bold">Natija</p>
-        <div v-if="test && test.status !== 'not_started'" class="h-full border p-1 md:p-5 bg-accent/30 flex flex-col divide-y">
-            <div class="border rounded-md overflow-x-auto">
-                <Table>
-                    <TableHeader class="border-b">
-                        <TableHead>#</TableHead>
-                        <TableHead>To'g'ri javob</TableHead>
-                        <TableHead>Sizning javobingiz</TableHead>
-                        <TableHead>Holati</TableHead>
-                    </TableHeader>
-                    <TableBody>
-                        <TableRow v-if="test" v-for="c, index in test.cases">
-                            <TableCell>{{ index }}</TableCell>
-                            <TableCell>{{ c.correct }}</TableCell>
-                            <TableCell>{{ c.answer }}</TableCell>
-                            <TableCell>
-                                <LucideCheck class="text-green-500" v-if="c.status === true" />
-                                <LucideX class="text-red-500" v-else />
-                            </TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </div>
-        </div>
     </div>
 </template>
