@@ -58,6 +58,13 @@ onMounted(() => {
     getSpecs();
 });
 
+const secondsToHMS = (seconds: number) => {
+    let h = Math.floor(seconds / 3600);
+    let m = Math.floor(seconds % 3600 / 60);
+    let s = Math.floor(seconds % 3600 % 60);
+    return `${h}`.padStart(2, "0") + ":" + `${m}`.padStart(2, "0") + ":" + `${s}`.padStart(2, "0");
+}
+
 
 const getTests = async () => {
     let result = await $fetch<ITest[]>(apify("tests"));
@@ -192,7 +199,7 @@ const printTestsResult = async () => {
                             <span class="font-bold text-orange-500 border p-1 rounded-md bg-orange-500/10" v-if="test.status === 'ended'">Tugagan</span>
                         </TableCell>
                         <TableCell>{{ test.percentage }}</TableCell>
-                        <TableCell>{{ test.elapsed }}</TableCell>
+                        <TableCell>{{ secondsToHMS(test.elapsed) }}</TableCell>
                         <TableCell>
                             <Button v-if="test.status !== 'not_started' && test.status !== 'started'" @click="printTestResult(test)" size="xs">PDF Natija</Button>
                         </TableCell>

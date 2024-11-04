@@ -43,9 +43,6 @@ const setStartTime = async () => {
     let start_time = new Date();
     let response = await $fetch(apify(`tests/test/${route.params.uuid}/set_start_time`), {
         method: "POST",
-        body: {
-            "start_time": `${start_time.getFullYear()}-${start_time.getMonth()+1}-${start_time.getDate()} ${start_time.getHours()}:${start_time.getMinutes()}:${start_time.getSeconds()}`
-        },
         headers: {
             "Authorization": `Token ${user.value?.token}`
         },
