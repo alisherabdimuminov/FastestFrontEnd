@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ITest, IResponse } from "~/types";
+import type { ITest, IResponse, IQuestion } from "~/types";
 import apify from "~/composables/useAPI";
 import { LucideCheck, LucideX, LucideChevronLeft } from "lucide-vue-next";
 import { toast } from "~/components/ui/toast";
@@ -23,6 +23,7 @@ if (user.value !== null && user.value.role === "admin") {
 const test = ref<ITest>();
 const answers = ref([]);
 const isLoading = ref(false);
+const isShown = ref(false);
 
 
 const getTest = async () => {
@@ -81,6 +82,12 @@ const submit = async () => {
 onMounted(() => {
     getTest();
     setStartTime();
+    document.addEventListener("keydown", (event) => {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            isShown.value = !isShown.value;
+        }
+    });
 });
 </script>
 
@@ -97,19 +104,19 @@ onMounted(() => {
                 <RadioGroup class="ml-10 p-2 flex flex-col gap-3" v-model="answers[index]">
                     <div class="flex gap-3">
                         <RadioGroupItem :id="`q_${index+1}_answer_a`" value="a" />
-                        <Label :class="{ 'underline underline-offset-4': question.correct_answer === 'a' && user && user.role === 'anonym' }" :for="`q_${index+1}_answer_a`">{{ question.answer_a }}</Label>
+                        <Label :class="{ 'font-bold': question.correct_answer === 'a' && user && user.role === 'anonym' && isShown }" :for="`q_${index+1}_answer_a`">{{ question.answer_a }}</Label>
                     </div>
                     <div class="flex gap-3">
                         <RadioGroupItem :id="`q_${index+1}_answer_b`" value="b" />
-                        <Label :class="{ 'underline underline-offset-4': question.correct_answer === 'b' && user && user.role === 'anonym' }" :for="`q_${index+1}_answer_b`">{{ question.answer_b }}</Label>
+                        <Label :class="{ 'font-bold': question.correct_answer === 'b' && user && user.role === 'anonym' && isShown }" :for="`q_${index+1}_answer_b`">{{ question.answer_b }}</Label>
                     </div>
                     <div class="flex gap-3">
                         <RadioGroupItem :id="`q_${index+1}_answer_c`" value="c" />
-                        <Label :class="{ 'underline underline-offset-4': question.correct_answer === 'c' && user && user.role === 'anonym' }" :for="`q_${index+1}_answer_c`">{{ question.answer_c }}</Label>
+                        <Label :class="{ 'font-bold': question.correct_answer === 'c' && user && user.role === 'anonym' && isShown }" :for="`q_${index+1}_answer_c`">{{ question.answer_c }}</Label>
                     </div>
                     <div class="flex gap-3">
                         <RadioGroupItem :id="`q_${index+1}_answer_d`" value="d" />
-                        <Label :class="{ 'underline underline-offset-4': question.correct_answer === 'd' && user && user.role === 'anonym' }" :for="`q_${index+1}_answer_d`">{{ question.answer_d }}</Label>
+                        <Label :class="{ 'font-bold': question.correct_answer === 'd' && user && user.role === 'anonym' && isShown }" :for="`q_${index+1}_answer_d`">{{ question.answer_d }}</Label>
                     </div>
                 </RadioGroup>
             </div>

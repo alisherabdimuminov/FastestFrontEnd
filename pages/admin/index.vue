@@ -9,6 +9,9 @@ definePageMeta({
     layout: "admin",
     middleware: "is-admin"
 });
+useHead({
+    title: "Bosh sahifa"
+});
 
 const users = ref<IUser[]>([]);
 const tests = ref<ITest[]>([]);
