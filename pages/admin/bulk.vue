@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import apify from "~/composables/useAPI";
+import type { ISet } from "~/types";
 
 
 interface IQuestion {
@@ -14,6 +15,11 @@ interface IQuestion {
 const rawQuestions = ref("");
 const questions = ref<IQuestion[]>([]);
 const isLoading = ref(false);
+const set = ref<ISet>({
+    id: "1",
+    name: ""
+});
+const sets = ref<ISet[]>([]);
 
 
 const parseRawQuestions = () => {
@@ -32,6 +38,11 @@ const parseRawQuestions = () => {
     console.log(splittedRawQuestions);
 }
 
+const getSets = async () => {
+    let result = await $fetch<ISet[]>(apify("sets"));
+    sets.value = result;
+}
+
 watch(rawQuestions, (newValue) => {
     parseRawQuestions();
     console.log(questions);
@@ -47,17 +58,30 @@ const bulkCreate = async () => {
     let response = await $fetch(apify("bulk"), {
         method: "POST",
         body: JSON.stringify({
+            "set": set.value,
             "raw": rawQuestions.value,
         })
     });
     rawQuestions.value = "";
     isLoading.value = false;
 }
+
+onMounted(() => {
+    getSets();
+});
 </script>
 
 <template>
     <div class="h-full p-5 md:p-10 flex flex-col gap-5">
         <Button :disabled="isLoading" @click="bulkCreate">Generatsiya qilish</Button>
+        <Select v-model="set.id">
+            <SelectTrigger>
+                <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectItem v-for="set in sets" :value="set.id">{{ set.name }}</SelectItem>
+            </SelectContent>
+        </Select>
         <div class="flex h-full border">
             <Textarea :disabled="isLoading" cols="20" v-model="rawQuestions" />
             <div class="w-full p-2">
