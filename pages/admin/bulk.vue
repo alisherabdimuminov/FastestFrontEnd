@@ -58,7 +58,7 @@ const bulkCreate = async () => {
     let response = await $fetch(apify("bulk"), {
         method: "POST",
         body: JSON.stringify({
-            "set": set.value,
+            "set": set.value.id,
             "raw": rawQuestions.value,
         })
     });
