@@ -86,7 +86,7 @@ const colorMode = useColorMode();
         <div class="flex-1 w-[calc(100%-3.5rem)]">
             <div class="h-[3rem] border-b bg-accent/30 flex items-center justify-between px-5">
                 <div>
-                    <p class="font-bold">Davlat ekologik ekspertizasi markazi</p>
+                    <p class="font-bold">O'zbekiston-Finlandiya Pedagogika Instituti</p>
                 </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger>
