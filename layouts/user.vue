@@ -36,7 +36,7 @@ const colorMode = useColorMode();
                         <LucideUser />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent class="w-64">
-                        <DropdownMenuLabel>{{ user?.phone }}</DropdownMenuLabel>
+                        <DropdownMenuLabel>{{ user?.department }}</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
                             {{ user?.first_name }} {{ user?.last_name }}
