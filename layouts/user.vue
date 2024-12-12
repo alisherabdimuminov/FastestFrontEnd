@@ -27,7 +27,7 @@ const colorMode = useColorMode();
         <div class="flex-1 w-[calc(100%-3.5rem)]">
             <div class="h-[3rem] border-b bg-accent/30 flex items-center justify-between px-5">
                 <div class="flex flex-col md:flex-row gap-1 md:gap-5">
-                    <p class="font-bold">Davlat ekologik ekspertizasi markazi</p>
+                    <p class="font-bold">Uzbekistan-Finlandiya Pedagogika Instituti</p>
                     <p class="hidden md:block">|</p>
                     <p>{{ user?.first_name }} {{ user?.last_name }}</p>
                 </div>

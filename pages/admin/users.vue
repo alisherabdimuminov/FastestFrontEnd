@@ -106,65 +106,73 @@ const editUser = async (user: IUser) => {
     userModalOpen.value = false;
 }
 
+const printUsersResult = async () => {
+    let url = apify(`users/pdf`);
+    navigateTo(url, { external: true, open: { target: "_blank" } });
+}
+
 </script>
 
 <template>
     <div class="p-5 md:p-10 flex flex-col gap-5">
         <div class="flex items-center justify-between">
             <p>Xodimlar</p>
-            <Dialog v-model:open="userModalOpen">
-                <DialogTrigger>
-                    <Button>Xodim qo'shish</Button>
-                </DialogTrigger>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Yangi xodim qo'shish</DialogTitle>
-                    </DialogHeader>
-                    <div>
-                        <Label>Foydalanuvchi nomi</Label>
-                        <Input v-model="user.username" />
-                        <div class="flex gap-3 flex-col md:flex-row">
-                            <div class="w-full">
-                                <Label>Ism </Label>
-                                <Input v-model="user.first_name" />
+            <div class="flex gap-2">
+                <Dialog v-model:open="userModalOpen">
+                    <DialogTrigger>
+                        <Button>Xodim qo'shish</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Yangi xodim qo'shish</DialogTitle>
+                        </DialogHeader>
+                        <div>
+                            <Label>Foydalanuvchi nomi</Label>
+                            <Input v-model="user.username" />
+                            <div class="flex gap-3 flex-col md:flex-row">
+                                <div class="w-full">
+                                    <Label>Ism </Label>
+                                    <Input v-model="user.first_name" />
+                                </div>
+                                <div class="w-full">
+                                    <Label>Familiya </Label>
+                                    <Input v-model="user.last_name" />
+                                </div>
+                                <div class="w-full">
+                                    <Label>Sharifi </Label>
+                                    <Input v-model="user.middle_name" />
+                                </div>
                             </div>
-                            <div class="w-full">
-                                <Label>Familiya </Label>
-                                <Input v-model="user.last_name" />
-                            </div>
-                            <div class="w-full">
-                                <Label>Sharifi </Label>
-                                <Input v-model="user.middle_name" />
+                            <Label>Telefon raqami </Label>
+                            <Input v-model="user.phone" />
+                            <Label>Filial</Label>
+                            <Select v-model="user.branch">
+                                <SelectTrigger>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem v-for="branch in branches" :value="branch">{{ branch }}</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Label>Bo'lim </Label>
+                            <Input v-model="user.department" />
+                            <Label>Lavozimi </Label>
+                            <Input v-model="user.position" />
+                            <Label>Parol </Label>
+                            <div class="relative">
+                                <Input v-model="user.pwd" />
+                                <div class="absolute top-0 right-0">
+                                    <Button @click="user.pwd = autogen()" size="xs"><LucideShuffle :size="16" /> </Button>
+                                </div>
                             </div>
                         </div>
-                        <Label>Telefon raqami </Label>
-                        <Input v-model="user.phone" />
-                        <Label>Filial</Label>
-                        <Select v-model="user.branch">
-                            <SelectTrigger>
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem v-for="branch in branches" :value="branch">{{ branch }}</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <Label>Bo'lim </Label>
-                        <Input v-model="user.department" />
-                        <Label>Lavozimi </Label>
-                        <Input v-model="user.position" />
-                        <Label>Parol </Label>
-                        <div class="relative">
-                            <Input v-model="user.pwd" />
-                            <div class="absolute top-0 right-0">
-                                <Button @click="user.pwd = autogen()" size="xs"><LucideShuffle :size="16" /> </Button>
-                            </div>
-                        </div>
-                    </div>
-                    <DialogFooter>
-                        <Button @click="addUser">Qo'shish</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+                        <DialogFooter>
+                            <Button @click="addUser">Qo'shish</Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+                <Button @click="printUsersResult">Foydalanuvchilarni yuklab olish</Button>
+            </div>
         </div>
         <div class="border rounded-md overflow-x-auto">
             <Table class="whitespace-nowrap">
